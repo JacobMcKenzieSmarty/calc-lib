@@ -16,22 +16,22 @@ type Handler struct {
 
 func (this *Handler) Handle(args []string) error {
 	if len(args) != 2 {
-		return errors.New("Usage: <a> <b>")
+		return fmt.Errorf("%w: two args req (you provided %d", ErrTooFewArgs, len(args))
 	}
 
 	a, err := strconv.Atoi(args[0])
 	if err != nil {
-		return err
+		return fmt.Errorf("%w: first arg (%s) %w", ErrMalformedArgs, a, err)
 	}
 	b, err := strconv.Atoi(args[1])
 	if err != nil {
-		return err
+		return fmt.Errorf("%w: first arg (%s) %w", ErrMalformedArgs, b, err)
 	}
 
 	c := this.calculator.Calculate(a, b)
 	_, err = fmt.Fprintf(this.output, "%v\n", c)
 	if err != nil {
-		return err
+		return fmt.Errorf("%w, %w", ErrOutputWriter, err)
 	}
 
 	return nil
@@ -43,3 +43,9 @@ func NewHandler(output io.Writer, calculator calc.Addition) *Handler {
 		output:     output,
 	}
 }
+
+var (
+	ErrTooFewArgs    = errors.New("\"Usage: <a> <b>\"")
+	ErrMalformedArgs = errors.New("invalid argument")
+	ErrOutputWriter  = errors.New("output write failed")
+)
