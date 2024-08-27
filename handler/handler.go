@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"strconv"
@@ -9,36 +10,36 @@ import (
 )
 
 type Handler struct {
-	input      []string
-	output     io.Writer
 	calculator calc.Calculator
+	output     io.Writer //lets you test in memory now (to a buffer, etc.) - an abstraction, not a low level detail.
 }
 
-func (this *Handler) Handle() {
-	if len(this.input) != 2 {
-		panic("Usage: <a> <b>")
+func (this *Handler) Handle(args []string) error {
+	if len(args) != 2 {
+		return errors.New("Usage: <a> <b>")
 	}
 
-	a, err := strconv.Atoi(this.input[0])
+	a, err := strconv.Atoi(args[0])
 	if err != nil {
-		panic(err)
+		return err
 	}
-	b, err := strconv.Atoi(this.input[1])
+	b, err := strconv.Atoi(args[1])
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	c := this.calculator.Calculate(a, b)
 	_, err = fmt.Fprintf(this.output, "%v\n", c)
 	if err != nil {
-		panic(err)
+		return err
 	}
+
+	return nil
 }
 
-func NewHandler(input []string, output io.Writer, calculator calc.Calculator) *Handler {
+func NewHandler(output io.Writer, calculator calc.Addition) *Handler {
 	return &Handler{
-		input:      input,
-		output:     output,
 		calculator: calculator,
+		output:     output,
 	}
 }

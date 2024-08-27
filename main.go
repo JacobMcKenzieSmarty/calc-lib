@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"calc-lib/calc"
@@ -8,5 +9,8 @@ import (
 )
 
 func main() {
-	handler.NewHandler(os.Args[1:], os.Stdout, calc.Addition{}).Handle()
+	err := handler.NewHandler(os.Stdout, calc.Addition{}).Handle(os.Args[1:])
+	if err != nil {
+		log.Fatal(err)
+	}
 }
