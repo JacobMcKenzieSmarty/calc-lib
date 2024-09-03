@@ -20,7 +20,7 @@ func assertEqual(t *testing.T, expected, actual any) {
 func assertError(t *testing.T, expected, actual error) {
 	if !errors.Is(expected, actual) {
 		t.Helper() //don't pay attention to this as part of the call stack.
-		t.Errorf("expected %v, got %v", expected, actual)
+		t.Errorf("Expected %v, got %v", expected, actual)
 	}
 }
 
