@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"calc-lib/calc"
-	"calc-lib/handler"
+	"github.com/JacobMcKenzieSmarty/calc-lib/calc"
+	"github.com/JacobMcKenzieSmarty/calc-lib/handler"
 )
 
 func main() {

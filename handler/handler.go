@@ -6,7 +6,7 @@ import (
 	"io"
 	"strconv"
 
-	"calc-lib/calc"
+	"github.com/JacobMcKenzieSmarty/calc-lib/calc"
 )
 
 type Handler struct {
