@@ -15,6 +15,9 @@ type Handler struct {
 }
 
 func (this *Handler) Handle(args []string) error {
+	if this.calculator == nil {
+		return fmt.Errorf("%w: calculator is required", ErrNilCalculator)
+	}
 	if len(args) != 2 {
 		return fmt.Errorf("%w: two args req (you provided %d", ErrTooFewArgs, len(args))
 	}
@@ -23,6 +26,7 @@ func (this *Handler) Handle(args []string) error {
 	if err != nil {
 		return fmt.Errorf("%w: first arg (%s) %w", ErrMalformedArgs, a, err)
 	}
+
 	b, err := strconv.Atoi(args[1])
 	if err != nil {
 		return fmt.Errorf("%w: first arg (%s) %w", ErrMalformedArgs, b, err)
@@ -37,7 +41,7 @@ func (this *Handler) Handle(args []string) error {
 	return nil
 }
 
-func NewHandler(output io.Writer, calculator calc.Addition) *Handler {
+func NewHandler(output io.Writer, calculator calc.Calculator) *Handler {
 	return &Handler{
 		calculator: calculator,
 		output:     output,
@@ -48,4 +52,5 @@ var (
 	ErrTooFewArgs    = errors.New("\"Usage: <a> <b>\"")
 	ErrMalformedArgs = errors.New("invalid argument")
 	ErrOutputWriter  = errors.New("output write failed")
+	ErrNilCalculator = errors.New("nil calculator")
 )

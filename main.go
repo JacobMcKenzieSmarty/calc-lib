@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 
@@ -9,8 +10,18 @@ import (
 )
 
 func main() {
-	err := handler.NewHandler(os.Stdout, calc.Addition{}).Handle(os.Args[1:])
+	var op string
+	flag.StringVar(&op, "op", "+", "One of + - * /")
+	flag.Parse()
+	err := handler.NewHandler(os.Stdout, calculators[op]).Handle(flag.Args())
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+var calculators = map[string]calc.Calculator{
+	"+": calc.Addition{},
+	"-": calc.Subtraction{},
+	"*": calc.Multiplication{},
+	"/": calc.Division{},
 }

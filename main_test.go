@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"testing"
 
-	calc "calc-lib/calc"
-	handler "calc-lib/handler"
+	"github.com/JacobMcKenzieSmarty/calc-lib/calc"
+	"github.com/JacobMcKenzieSmarty/calc-lib/handler"
 )
 
 func assertEqual(t *testing.T, expected, actual any) {
@@ -49,6 +49,12 @@ func TestOutputWriterError(t *testing.T) {
 
 	assertError(t, handler.ErrOutputWriter, err)
 	assertError(t, taco, err)
+}
+
+func TestNilCalculator(t *testing.T) {
+	myHandler := handler.NewHandler(&bytes.Buffer{}, nil)
+	err := myHandler.Handle([]string{"1", "2"})
+	assertError(t, handler.ErrNilCalculator, err)
 }
 
 func TestHappyPath(t *testing.T) {
