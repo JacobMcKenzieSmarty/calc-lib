@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"testing"
 
-	"calc-lib/calc"
-	"calc-lib/handler"
+	calc "calc-lib/calc"
+	handler "calc-lib/handler"
 )
 
 func assertEqual(t *testing.T, expected, actual any) {
